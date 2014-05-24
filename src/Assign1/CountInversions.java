@@ -8,18 +8,7 @@ import java.util.Scanner;
 
 public class CountInversions {
 	
-	public static List<Integer> readFromFile(String fileName) throws FileNotFoundException{
-		
-		Scanner scanner = new Scanner(new File(fileName));
-		List<Integer> output = new ArrayList<Integer>();
-		int i = 0;
-		while(scanner.hasNextInt())
-		{
-		     output.add(scanner.nextInt());
-		}
-		
-		return output;
-	}
+
 	
 	public static long bruteCount(List<Integer> input){
 		
@@ -99,7 +88,7 @@ public class CountInversions {
 		System.out.println("hi");
 		try 
 		{
-			List<Integer> numList = readFromFile("/Users/Ramanan/Algorithms/Assignments/src/IntegerArray.txt");
+			List<Integer> numList = util.FileReader.readFromFile("/Users/Ramanan/Algorithms/Assignments/src/IntegerArray.txt");
 			System.out.println("length of list = "+numList.size());
 			long start = System.currentTimeMillis();
 			long numInversions = bruteCount(numList);
