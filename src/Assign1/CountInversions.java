@@ -1,9 +1,6 @@
 package Assign1;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class CountInversions {
@@ -88,7 +85,7 @@ public class CountInversions {
 		System.out.println("hi");
 		try 
 		{
-			List<Integer> numList = util.FileReader.readFromFile("/Users/Ramanan/Algorithms/Assignments/src/IntegerArray.txt");
+			List<Integer> numList = util.FileReader.readFromFile("/Users/Ramanan/Documents/workspace-sts-3.3.0.RELEASE/Algos/resources/IntegerArray.txt");
 			System.out.println("length of list = "+numList.size());
 			long start = System.currentTimeMillis();
 			long numInversions = bruteCount(numList);
