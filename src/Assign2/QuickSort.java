@@ -14,7 +14,7 @@ public class QuickSort {
 		{
 			int retValue = end - start;
 			
-			int partIndex = partition (inList,start,end);
+			int partIndex = medianOf3Partition(inList,start,end);
 			
 
 			retValue = retValue + sortAndCount(inList,start,partIndex-1);			

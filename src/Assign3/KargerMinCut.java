@@ -2,6 +2,7 @@ package Assign3;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +10,15 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
-import util.Vertex;
-import Assign2.QuickSort;
+
 
 public class KargerMinCut {
+
+	Random rand = new Random(System.nanoTime());
 	
 	public static void main(String[] args) throws Exception {
+		
+
 		
 		System.out.println("KragerMinCut");
 		
@@ -23,17 +27,18 @@ public class KargerMinCut {
 			String userDir = System.getProperty("user.dir");
 			String filePath = userDir + "/resources/kargerMinCut.txt";
 			Map<Integer,List<Integer>> adjList= util.FileReader.readAdjacencyList(filePath);
-			System.out.println(adjList.size());
 			
-			
-			
+		
 			
 			int min = Integer.MAX_VALUE;
+			
+			
 			for(int i =0; i<200; i++){
 				KargerMinCut cutter = new KargerMinCut();
-				int out = cutter.computeMinCut(adjList);
+				System.out.println(i+". Size of the adjacency list = "+adjList.size());
+				int out = cutter.computeMinCut(copyOf(adjList));
 				Thread.sleep(50);
-				System.out.println("Output = "+out);
+				System.out.println(i+". Output = "+out);
 				
 				if(min > out)
 					min = out;
@@ -53,6 +58,21 @@ public class KargerMinCut {
 
 	}
 	
+	private static Map<Integer, List<Integer>> copyOf(
+			Map<Integer, List<Integer>> adjList) {
+		
+		Map<Integer,List<Integer>> output = new HashMap<Integer,List<Integer>>();
+		
+		for(Integer key:adjList.keySet())
+		{
+			List<Integer> row = new ArrayList<Integer>();
+			row.addAll(adjList.get(key));
+			output.put(key, row);
+		}
+		
+		return output;
+	}
+
 	public static boolean isValid(Map<Integer,List<Integer>> input){
 		
 		Set<Integer> keySet = input.keySet();
@@ -162,7 +182,9 @@ public class KargerMinCut {
 	private Integer getRandomKey(List<Integer> edges) {
 		
 		int size = edges.size();
-		int item = new Random(System.currentTimeMillis()).nextInt(size);
+		System.out.println("upper limit on edges = "+size);
+		int item = rand.nextInt(size);
+		System.out.println("random edge = "+item);
 		return edges.get(item);
 	}
 
@@ -170,7 +192,9 @@ public class KargerMinCut {
 	private Integer getRandomKey(Set<Integer> keySet) {
 
 		int size = keySet.size();
-		int item = new Random(System.currentTimeMillis()).nextInt(size); // In real life, the Random object should be rather more shared than this
+		System.out.println("upper limit on keyset = "+size);
+		int item = rand.nextInt(size); // In real life, the Random object should be rather more shared than this
+		System.out.println("random key = "+item);
 		int i = 0;
 		Integer last = null;
 		for(Integer obj : keySet)
