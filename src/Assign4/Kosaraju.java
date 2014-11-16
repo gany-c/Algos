@@ -7,8 +7,60 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Kosaraju {
+	
+	private static void iDFS(Gnode source){
+		
+		if(source == null||source.explored)
+			return;
+		else
+		{
+			
+			Stack<Gnode> stack = new Stack<Gnode>();
+			stack.push(source);
+			
+			while(!stack.isEmpty()){
+				
+				Gnode node = stack.pop();
+				node.explored = true;
+				System.out.println(node.value);
+				
+				for(Gnode desc:node.outGoing)
+				{
+					if(!desc.explored)
+						stack.push(desc);
+				}
+			}
+			
+			
+		}
+	}	
+	
+	@Deprecated
+	private static void dFS(Gnode source){
+		
+		if(source == null||source.explored)
+			return;
+		else
+		{
+			source.explored = true;
+			//System.out.println(source.value);
+			
+			if(source.outGoing==null||source.outGoing.isEmpty())
+				return;
+			else
+			{
+				for(Gnode node:source.outGoing)
+				 if(!node.explored)	
+					dFS(node);
+			}
+				
+			
+		}
+		
+	}
 	
 	private static void reverseGraph(Map<Integer,Gnode> input){
 		
@@ -83,6 +135,9 @@ public class Kosaraju {
 			
 			reverseGraph(input);
 			System.out.println(input.size());
+			
+			Gnode someRandomNode = input.entrySet().iterator().next().getValue();
+			iDFS(someRandomNode);
 		} 
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
