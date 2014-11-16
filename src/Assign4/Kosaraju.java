@@ -2,11 +2,31 @@ package Assign4;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Kosaraju {
+	
+	private static void reverseGraph(Map<Integer,Gnode> input){
+		
+		for(Integer key: input.keySet()){
+			
+			Gnode node = input.get(key);
+			
+			List<Gnode> temp = node.incoming;
+			node.incoming = node.outGoing;
+			node.outGoing = temp;
+			
+			node.explored = false;
+			
+			
+		}
+		
+		
+	}
 	
 	public static Map<Integer,Gnode> loadGraph(String fileName) throws FileNotFoundException{
 		 Map<Integer,Gnode> output = new HashMap<Integer,Gnode>();
@@ -59,6 +79,9 @@ public class Kosaraju {
 		try 
 		{
 			Map<Integer,Gnode> input = loadGraph(filePath);
+			System.out.println(input.size());
+			
+			reverseGraph(input);
 			System.out.println(input.size());
 		} 
 		catch (FileNotFoundException e) {

@@ -14,5 +14,7 @@ public class Gnode {
 	public int order = -1;
 	
 	public int order2 = -1;
+	
+	boolean explored = false;
 
 }
