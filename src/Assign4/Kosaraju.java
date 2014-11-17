@@ -36,7 +36,7 @@ public class Kosaraju {
 	
 	private static int t = 0;
 	
-	private static void iDFS2(Gnode source) {
+	private void iDFS2(Gnode source) {
 
 		if(source == null||source.explored)
 			return;
@@ -70,7 +70,7 @@ public class Kosaraju {
 		
 	}
 	
-	private static void iDFS(Gnode source){
+	private void iDFS(Gnode source){
 		
 		if(source == null||source.explored)
 			return;
@@ -109,7 +109,7 @@ public class Kosaraju {
 	}	
 	
 	@Deprecated
-	private static void dFS(Gnode source){
+	private void dFS(Gnode source){
 		
 		if(source == null||source.explored)
 			return;
@@ -132,7 +132,7 @@ public class Kosaraju {
 		
 	}
 	
-	private static void reverseGraph(List<Gnode> input){
+	private void reverseGraph(List<Gnode> input){
 		
 		for(Gnode node:input){
 		
@@ -200,7 +200,7 @@ public class Kosaraju {
 		return ouList;
 	}
 	
-	public static void kosaraju(List<Gnode> input){
+	public void doublePass(List<Gnode> input){
 		
 		System.out.println(" Started Kosaraju");
 		
@@ -251,12 +251,14 @@ public class Kosaraju {
 		
 		Collections.sort(countsList);
 		
-		for(int i = countsList.size()-1;i>=countsList.size()-6;i--)
-			System.out.println(countsList.get(i));
+		System.out.println("Top 5 largest strongly connected components are: ");
+		
+		for(int i = countsList.size()-1;i>countsList.size()-6;i--)
+			System.out.print(countsList.get(i)+",");
 		
 	}
 	
-	private static void dFS_Loop2(List<Gnode> input) {
+	private void dFS_Loop2(List<Gnode> input) {
 		
 		for(Gnode node:input){
 			if(node.explored)
@@ -269,7 +271,7 @@ public class Kosaraju {
 
 
 
-	private static void dFS_Loop1(List<Gnode> input) {
+	private void dFS_Loop1(List<Gnode> input) {
 		t = 0;
 		
 		for(Gnode node:input){
@@ -290,7 +292,9 @@ public class Kosaraju {
 			List<Gnode> input = loadGraph(filePath);
 			System.out.println(input.size());
 			
-			kosaraju(input);
+			Kosaraju kosaraju = new Kosaraju();	
+			
+			kosaraju.doublePass(input);
 		} 
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
