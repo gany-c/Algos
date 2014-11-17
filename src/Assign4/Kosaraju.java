@@ -3,13 +3,72 @@ package Assign4;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
 
+/**
+ * 
+ * @author Ramanan
+ * Download the text file here. Zipped version here. (Right click and save link as)
+The file contains the edges of a directed graph. Vertices are labeled as positive integers from 1 to 875714. Every row indicates an edge, the vertex label in first column is the tail and the vertex label in second column is the head (recall the graph is directed, and the edges are directed from the first column vertex to the second column vertex). So for example, the 11th row looks liks : "2 47646". This just means that the vertex with label 2 has an outgoing edge to the vertex with label 47646
+
+Your task is to code up the algorithm from the video lectures for computing strongly connected components (SCCs), and to run this algorithm on the given graph. 
+
+Output Format: You should output the sizes of the 5 largest SCCs in the given graph, in decreasing order of sizes, separated by commas (avoid any spaces). So if your algorithm computes the sizes of the five largest SCCs to be 500, 400, 300, 200 and 100, then your answer should be "500,400,300,200,100". If your algorithm finds less than 5 SCCs, then write 0 for the remaining terms. Thus, if your algorithm computes only 3 SCCs whose sizes are 400, 300, and 100, then your answer should be "400,300,100,0,0".
+
+WARNING: This is the most challenging programming assignment of the course. Because of the size of the graph you may have to manage memory carefully. The best way to do this depends on your programming language and environment, and we strongly suggest that you exchange tips for doing this on the discussion forums.
+
+Answer for Question 1
+You entered:
+
+Your Answer		Score	Explanation
+434821,968,459,313,211	Correct	5.00	
+Total		5.00 / 5.00	
+
+ *
+ */
+
 public class Kosaraju {
+	
+	private static int t = 0;
+	
+	private static void iDFS2(Gnode source) {
+
+		if(source == null||source.explored)
+			return;
+		else
+		{
+			Stack<Gnode> stack = new Stack<Gnode>();
+			stack.push(source);
+			
+			while(!stack.isEmpty())
+			{
+				
+				Gnode node = stack.pop();
+				
+				if(!node.explored)
+				{					
+					node.explored = true;
+					node.leader = source.value;
+					
+					for(Gnode desc:node.outGoing)
+					{
+						if(!desc.explored)
+							stack.push(desc);
+					}
+				}
+				
+				
+			}
+			
+		}
+		
+		
+	}
 	
 	private static void iDFS(Gnode source){
 		
@@ -24,14 +83,25 @@ public class Kosaraju {
 			while(!stack.isEmpty()){
 				
 				Gnode node = stack.pop();
-				node.explored = true;
-				System.out.println(node.value);
 				
-				for(Gnode desc:node.outGoing)
+				if(!node.explored)
 				{
-					if(!desc.explored)
-						stack.push(desc);
+					node.explored = true;
+					
+					stack.push(node);
+					if(node.outGoing.isEmpty())
+						node.finishingTime = t++;
+					for(Gnode desc:node.outGoing)
+					{
+						if(!desc.explored)
+							stack.push(desc);
+					}					
 				}
+				else
+				{
+					node.finishingTime = t++;
+				}
+
 			}
 			
 			
@@ -62,25 +132,24 @@ public class Kosaraju {
 		
 	}
 	
-	private static void reverseGraph(Map<Integer,Gnode> input){
+	private static void reverseGraph(List<Gnode> input){
 		
-		for(Integer key: input.keySet()){
-			
-			Gnode node = input.get(key);
-			
+		for(Gnode node:input){
+		
 			List<Gnode> temp = node.incoming;
 			node.incoming = node.outGoing;
 			node.outGoing = temp;
 			
 			node.explored = false;
 			
-			
 		}
 		
 		
 	}
 	
-	public static Map<Integer,Gnode> loadGraph(String fileName) throws FileNotFoundException{
+	public static List<Gnode> loadGraph(String fileName) throws FileNotFoundException{
+		
+		 
 		 Map<Integer,Gnode> output = new HashMap<Integer,Gnode>();
 		 
 			Scanner scanner = new Scanner(new File(fileName));
@@ -121,8 +190,96 @@ public class Kosaraju {
 		
 	    
 		scanner.close();
-		return output;
+		
+		List<Gnode> ouList = new ArrayList<Gnode>();
+		for(Integer key: output.keySet())
+		{
+			ouList.add(output.get(key));
+		}
+		
+		return ouList;
 	}
+	
+	public static void kosaraju(List<Gnode> input){
+		
+		System.out.println(" Started Kosaraju");
+		
+		reverseGraph(input);
+		
+		System.out.println(" reversed graph");
+		
+		dFS_Loop1(input);
+		
+		System.out.println(" completed first dFS_loop graph");
+		
+		Collections.sort(input);
+		
+		Collections.reverse(input);	
+		
+		System.out.println(" completed sorting in descending order of time");
+		
+		reverseGraph(input);
+		
+		System.out.println(" completed second reversal");
+		
+		dFS_Loop2(input);
+		
+		System.out.println(" completed second dfs_loop");
+		
+		Map<Integer,Integer> countsMap = new HashMap<Integer,Integer>();
+		
+		for(Gnode node: input)
+		{
+			int leader = node.leader;
+			
+			if(countsMap.get(leader)==null)
+				countsMap.put(leader, 1);
+			else
+				countsMap.put(leader, countsMap.get(leader)+1);
+		}
+		
+		System.out.println(" created map of counts "+countsMap.size());
+		
+		List<Integer> countsList = new ArrayList<Integer>();
+		
+		for(Integer leader: countsMap.keySet())
+		{
+			countsList.add(countsMap.get(leader));
+		}
+		
+		System.out.println(" created list of counts");
+		
+		Collections.sort(countsList);
+		
+		for(int i = countsList.size()-1;i>=countsList.size()-6;i--)
+			System.out.println(countsList.get(i));
+		
+	}
+	
+	private static void dFS_Loop2(List<Gnode> input) {
+		
+		for(Gnode node:input){
+			if(node.explored)
+				continue;
+			else
+				iDFS2(node);
+		}
+		
+	}
+
+
+
+	private static void dFS_Loop1(List<Gnode> input) {
+		t = 0;
+		
+		for(Gnode node:input){
+			if(node.explored)
+				continue;
+			else
+				iDFS(node);
+		}
+	}
+
 	public static void main(String[] args){
 		
 		String userDir = System.getProperty("user.dir");
@@ -130,14 +287,10 @@ public class Kosaraju {
 		
 		try 
 		{
-			Map<Integer,Gnode> input = loadGraph(filePath);
+			List<Gnode> input = loadGraph(filePath);
 			System.out.println(input.size());
 			
-			reverseGraph(input);
-			System.out.println(input.size());
-			
-			Gnode someRandomNode = input.entrySet().iterator().next().getValue();
-			iDFS(someRandomNode);
+			kosaraju(input);
 		} 
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
