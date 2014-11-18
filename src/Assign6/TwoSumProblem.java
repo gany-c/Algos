@@ -41,7 +41,7 @@ public class TwoSumProblem {
 			
 			System.out.println("number of lines = "+i);
 			
-					
+			scanner.close();		
 			
 			return sumSet.size();	
 		} catch (FileNotFoundException e) {

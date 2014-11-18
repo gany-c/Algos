@@ -9,5 +9,16 @@ public class Vertex {
 	int distanceFromSource = Integer.MAX_VALUE;
 	List<Edge> outgoing = new ArrayList<Edge>();
 	boolean explored = false;
+	
+	@Override
+	public String toString() {
+		return "Vertex [label=" + label + ", distanceFromSource="
+				+ distanceFromSource + ", outgoing=" + outgoing + ", explored="
+				+ explored + "]";
+	}
+	
+	
+	
+	
 
 }
