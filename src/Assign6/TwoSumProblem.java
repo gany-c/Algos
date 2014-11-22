@@ -2,46 +2,55 @@ package Assign6;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import util.FileReader;
-
 public class TwoSumProblem {
 	
-	public int sum(String fileName) throws FileNotFoundException{
+	public int sum(String fileName) throws FileNotFoundException, InterruptedException{
 		
 		try 
 		{
 			Scanner scanner = new Scanner(new File(fileName));
 			
 			ConcurrentSkipListSet<Long> numSet = new ConcurrentSkipListSet<Long>();
-			Set<Long> sumSet =  new HashSet<Long>();
-			int i = 0;
+			Set<Integer> sumSet =  new TreeSet<Integer>();
+			int j = 0;
 
 			while(scanner.hasNextLong())
 			{
-				Long num = scanner.nextLong();
-			     if(!numSet.contains(num))
-			     {
-			    	 for(Long prev:numSet)
-			    	 {
-			    		 Long sum = prev + num;
-			    		 sumSet.add(sum);
-			    	 }
-			    	 numSet.add(num);
-			     }
-			    	 
-			     i++;
-			}
+				long num = scanner.nextLong();
+
+			    numSet.add(num);
+			     
+			     if(j%1000 == 0)
+			     {	
+			    	 System.out.println("number of lines = "+j);
+			    	
+			     }	 
+			     j++;
+			}			
 			
-			System.out.println("number of lines = "+i);
 			
 			scanner.close();		
+			
+			for(int i= -10000;i<=10000;i++)
+			{
+				for(long num:numSet)
+				{
+					if(numSet.contains(i-num))
+						sumSet.add(i);
+				}
+				
+			     if(i%100 == 0)
+			     {	
+			    	 System.out.println("number of sums = "+i);
+			    	
+			     }	
+			}
+			
 			
 			return sumSet.size();	
 		} catch (FileNotFoundException e) {
@@ -53,7 +62,7 @@ public class TwoSumProblem {
 		
 	}
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 		
 		String userDir = System.getProperty("user.dir");
 		
