@@ -8,7 +8,17 @@ public class MinHeap {
 	
 	private int index = 0;
 	
-
+	public void display(){
+		if(holder == null||holder.length==0)
+			return;
+		else
+		{
+			System.out.println();
+			for(int i=0;i<index;i++)
+				System.out.print(holder[i]+", ");
+			System.out.println();
+		}
+	}
 	
 	public MinHeap(int capacity) throws InvalidAttributesException{
 		
@@ -23,26 +33,33 @@ public class MinHeap {
 		return this.index <= 0;
 	}
 	
-	public int peek(){
-		
-		return holder[0];
+	public boolean isFull(){
+		return this.index >= this.holder.length;
 	}
 	
-	public int extract(){
+	public int peek(){
 		
-		if(index == 0)
-			return Integer.MIN_VALUE;
+		return this.holder[0];
+	}
+	
+	public int extract() throws Exception{
+		
+		if(index <= 0)
+			throw new Exception("heap is empty");
+		
+
 		
 		int out = holder[0];
 		index--;
 		
-		if(index != 0)
+		if(index > 0)
 		{
 			holder[0] = holder[index];
 			correctDown(0);
 			
 		}
 
+		
 		return out;
 	}
 	
@@ -50,13 +67,13 @@ public class MinHeap {
 		
 		int left = 2*i+1;
 		
-		if(left > index -1)
+		if(left >= index)
 			return;
 		else
 		{
-			int right = 2*i+2;
+			int right =left+1;
 			
-			if(right > index -1)
+			if(right >= index )
 			{
 				if(holder[i] > holder[left])
 				{
@@ -68,40 +85,32 @@ public class MinHeap {
 			}
 			else
 			{
-				if(holder[i] < holder[left] && holder[i] < holder[right])
+				if(holder[i] <= holder[left] && holder[i] <= holder[right])
 					return;
-				else if(holder[i] < holder[left] && holder[i] >= holder[right])
-				{
-					swap(i,right);
-					correctDown(right);
-				}
-				else if(holder[i] >= holder[left] && holder[i] < holder[right])
-				{
-					swap(i,left);
-					correctDown(left);
-				}
+
 				else
 				{
-					int big = left;
+					int small = left;
 					
-					if(holder[left] < holder[right])
-						big = right;
+					if(holder[left] > holder[right])
+						small = right;
 					
-					swap(i,big);
-					correctDown(big);
+					swap(i,small);
+					correctDown(small);
 				}
 			}
 		}
 		
 	}
 
-	public void insert(int value){
+	public void insert(int value) throws Exception{
 		
 		if(index >= holder.length)
-			return;
+			throw new Exception("out of storage space");
 		
-		holder[this.index++] = value;
-		bubbleUp(this.index-1);
+		holder[this.index] = value;
+		bubbleUp(this.index);
+		index++;
 		
 	}
 
@@ -133,8 +142,18 @@ public class MinHeap {
 		
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void main(String[] args) throws Exception {
+		
+		MinHeap heap = new MinHeap(10);
+		heap.insert(5);
+		heap.insert(3);
+		heap.insert(66);
+		heap.insert(4);
+		heap.insert(2);
+		heap.insert(283);
+		//heap.display();
+		System.out.println(heap.extract());
+		
 
 	}
 
