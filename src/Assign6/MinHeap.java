@@ -2,12 +2,23 @@ package Assign6;
 
 import javax.naming.directory.InvalidAttributesException;
 
+/**
+ * 
+ * @author Ramanan
+ * 
+ * Min heap is implemented as an array based binary tree.
+ * Node always has a lower value than both left and right child
+ *
+ */
 public class MinHeap {
 	
+	//use an array
 	private int[] holder = null;
+	
 	
 	private int index = 0;
 	
+	//display contents of the array
 	public void display(){
 		if(holder == null||holder.length==0)
 			return;
@@ -20,6 +31,7 @@ public class MinHeap {
 		}
 	}
 	
+	//constructor
 	public MinHeap(int capacity) throws InvalidAttributesException{
 		
 		if(capacity <= 0)
@@ -29,6 +41,7 @@ public class MinHeap {
 		this.index = 0;
 	}
 	
+	//isEmpty
 	public boolean isEmpty(){
 		return this.index <= 0;
 	}
@@ -42,6 +55,12 @@ public class MinHeap {
 		return this.holder[0];
 	}
 	
+	/*
+	 * 1. return the topmost element
+	 * 2. decrement the index
+	 * 3. take bottom-most element and put it in the bottom.
+	 * 4. correct the heap property downwards.
+	 */
 	public int extract() throws Exception{
 		
 		if(index <= 0)
@@ -63,18 +82,28 @@ public class MinHeap {
 		return out;
 	}
 	
+	/**
+	 * 1. check if the root has children, otherwise return
+	 * 2. if it has a left child alone, swap with the left child if root is smaller.
+	 * 3. if it has both children, find the smaller of the two and swap with it. make a recursive call
+	 * @param i
+	 */
 	private void correctDown(int i) {
 		
 		int left = 2*i+1;
 		
+		//check if the left child is within index, otherwise it has no children
 		if(left >= index)
 			return;
 		else
 		{
+			//get index of right child 
 			int right =left+1;
 			
+			//check if it falls within bounds
 			if(right >= index )
 			{
+				//if left is smaller than root, swap.
 				if(holder[i] > holder[left])
 				{
 					swap(i,left);
@@ -85,6 +114,9 @@ public class MinHeap {
 			}
 			else
 			{
+				//if both children indexes are valid, find the smaller of the 2
+				//swap the root with smaller,
+				//make a recursive call.
 				if(holder[i] <= holder[left] && holder[i] <= holder[right])
 					return;
 
@@ -103,6 +135,13 @@ public class MinHeap {
 		
 	}
 
+	/**
+	 * 1. insert at the array's end;
+	 * 2. correct the heap upwards.
+	 * 3. update the array end pointer.
+	 * @param value
+	 * @throws Exception
+	 */
 	public void insert(int value) throws Exception{
 		
 		if(index >= holder.length)
@@ -114,6 +153,15 @@ public class MinHeap {
 		
 	}
 
+	/**
+	 * 
+	 * @param i
+	 * 
+	 * 1. if you have reached the top, exit
+	 * 2. Otherwise get the index of the parent, based on the current index being even or odd
+	 * 3. Swap the parent and current if parent is larger than the current and continue recusively.
+	 * 
+	 */
 	private void bubbleUp(int i) {
 		
 	  if(i == 0)
@@ -145,16 +193,20 @@ public class MinHeap {
 	public static void main(String[] args) throws Exception {
 		
 		MinHeap heap = new MinHeap(10);
-		heap.insert(5);
+		heap.insert(50);
 		heap.insert(3);
-		heap.insert(66);
-		heap.insert(4);
+		heap.insert(6);
+		heap.insert(41);
 		heap.insert(2);
-		heap.insert(283);
+		heap.insert(-283);
 		//heap.display();
 		System.out.println(heap.extract());
-		
-
+		System.out.println(heap.extract());
+		System.out.println(heap.extract());
+		heap.insert(8);
+		System.out.println(heap.extract());
+		System.out.println(heap.extract());
+		System.out.println(heap.extract());
 	}
 
 
