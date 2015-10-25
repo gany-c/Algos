@@ -159,7 +159,7 @@ public class MinHeap {
 	 * 
 	 * 1. if you have reached the top, exit
 	 * 2. Otherwise get the index of the parent, based on the current index being even or odd
-	 * 3. Swap the parent and current if parent is larger than the current and continue recusively.
+	 * 3. Swap the parent and current if parent is larger than the current and continue recursively.
 	 * 
 	 */
 	private void bubbleUp(int i) {
