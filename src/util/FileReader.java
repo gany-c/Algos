@@ -59,6 +59,7 @@ public class FileReader {
 			}
 			
 			System.out.println("number of lines = "+i);
+			scanner.close();
 			
 			return output;			
 			
