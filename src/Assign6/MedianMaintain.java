@@ -5,7 +5,37 @@ import javax.naming.directory.InvalidAttributesException;
 /**
  *  2 heaps 
  * @author Ramanan
- *
+ *  PROBLEM:-  Create a data structure such that, 
+ *  1. elements can be added at random
+ *  2. should be be able to identify the median at any time
+ *  
+ *  
+ *  
+ *  SOLUTION:-
+ *  
+ *  1. Create 3 integer instance var for total size, max heap size and min heap size.
+ *  2. Create a Max heap to hold the smaller elements,
+ *  3. Create a Min heap to hold the larger elements.
+ *  
+ *  4. CONSTRUCTOR: Given a size, create max heap of half the size and min heap of remaining size
+ *  
+ *  INSERT METHOD:- 
+ *  1. If both heaps are full, then set throw an exception
+ *  2. If both heaps are empty then insert into the max heap
+ *  
+ *  3. If value is lesser than  Max's high
+ *  3.1. If max heap is not full just add it there, do a check for size discrepancy of 2 between the 2 heaps,
+ *  if yes do the step below
+ *  3.1.1  else take the top of max heap and add it to min heap, and then add.
+ * 
+ * 4. Else if the Min heap is empty 
+ * 4.1. do a transfer from min to max
+ * 4.2 add to min heap
+ * 4.3. again if the min heap is bigger than max by 2, do a min to max transfer
+ * 
+ * GET MEDIAN FUNCTION:
+ * 
+ * RETURN THE LARGER HEAP'S TOP OR RETURN ANY TOP.
  */
 
 public class MedianMaintain {
